@@ -1,4 +1,8 @@
-docker run -ti --rm --name azure-cli-tutorial -v /Users/georgepaw/projects/Cheap_AKS_Kubernetes_Cluster:/home -w /home mcr.microsoft.com/azure-cli
+# Create a project directory
+git clone X 
+cd X
+docker run -ti --rm --name azure-cli-tutorial -v $PWD:/home -w /home mcr.microsoft.com/azure-cli
+
 
 # Install AKS CLI
 az aks install-cli

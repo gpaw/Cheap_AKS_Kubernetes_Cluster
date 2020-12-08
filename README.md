@@ -16,7 +16,7 @@ You need to create a separate Pay-As-You-Go subscription in Azure. The Free Tier
 
 I am using docker-desktop to run my container. You can [download it from here](https://www.docker.com/products/docker-desktop).
 
-![alt text](images/001-webapp.png)
+![Example of Web App [Source](https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough)](images/001-webapp.png)
 
 ## Tutorial
 
@@ -60,7 +60,7 @@ You need to authorise container services in your Azure subscription. You only ne
 az feature register \
 	--subscription $SUBSCRIPTION \
 	--namespace "Microsoft.ContainerService" \
-    	--name "spotpoolpreview"
+    --name "spotpoolpreview"
     
 az feature list -o table \
 	--subscription $SUBSCRIPTION \
@@ -87,14 +87,14 @@ az group create --name $RESOURCE_GROUP \
 # Create a basic single-node AKS cluster
 az aks create \
 	--subscription $SUBSCRIPTION \
-    	--resource-group $RESOURCE_GROUP  \
-    	--name $AKS_CLUSTER \
-    	--vm-set-type VirtualMachineScaleSets \
-    	--node-count 1 \
-    	--ssh-key-value cheapakscluster.pub\
-    	--load-balancer-sku standard \
-    	--enable-cluster-autoscaler \
-    	--min-count 1 \
+    --resource-group $RESOURCE_GROUP  \
+    --name $AKS_CLUSTER \
+    --vm-set-type VirtualMachineScaleSets \
+    --node-count 1 \
+    --ssh-key-value cheapakscluster.pub\
+    --load-balancer-sku standard \
+    --enable-cluster-autoscaler \
+    --min-count 1 \
     --max-count 3
     
 # Make note of where service principal is
@@ -107,9 +107,9 @@ az aks get-credentials \
     --name $AKS_CLUSTER
 ```
 
-![alt text](images/002-azureportal.png)
+![Two Resource Groups will be created](images/002-azureportal.png)
 
-![alt text](images/003-azureportal.png)
+![Kubernetes resources inside CheapAKSRG](images/003-azureportal.png)
 
 We will create the spot node pool by running the following commands. Once the node is running, we need to remove the taints to allow the core-dns services to run on a spot node.
 
@@ -117,18 +117,18 @@ We will create the spot node pool by running the following commands. Once the no
 # Add Spot Nodepool - Only works for Pay-As-You-Go - wait 3 mins
 az aks nodepool add \
 	--subscription $SUBSCRIPTION \
-    	--resource-group $RESOURCE_GROUP \
-    	--cluster-name $AKS_CLUSTER \
-    	--name $SPOT_VMSS \
-    	--priority Spot \
-    	--spot-max-price -1 \
-    	--eviction-policy Delete \
-    	--node-vm-size $VM_SIZE \
-    	--node-count 1 \
-    	--node-osdisk-size 32 \
-    	--enable-cluster-autoscaler \
-    	--min-count 1 \
-    	--max-count 3
+    --resource-group $RESOURCE_GROUP \
+    --cluster-name $AKS_CLUSTER \
+    --name $SPOT_VMSS \
+    --priority Spot \
+    --spot-max-price -1 \
+    --eviction-policy Delete \
+    --node-vm-size $VM_SIZE \
+    --node-count 1 \
+    --node-osdisk-size 32 \
+    --enable-cluster-autoscaler \
+    --min-count 1 \
+    --max-count 3
 
 # Confirm that the spot nodepool has started
 kubectl get node
@@ -146,9 +146,9 @@ kubectl taint nodes --all kubernetes.azure.com/scalesetpriority-
 # error: taint "kubernetes.azure.com/scalesetpriority" not found
 ```
 
-![alt text](images/004-azureportal.png)
+![A new node pool created called "aks-spotnodepool-34579063-vmss"](images/004-azureportal.png)
 
-![alt text](images/005-azureportal.png)
+![One node running inside spot node pool](images/005-azureportal.png)
 
 ![alt text](images/006-kubectl.png)
 
@@ -191,7 +191,7 @@ kubectl delete node INSERT_DEFAULT_NODEPOOL_NAME
 # aks-spotnodepool-34579063-vmss000000   Ready    agent   24m   v1.18.10
 ```
 
-![alt text](images/007-azureportal.png)
+![Default node pool has no compute instance running](images/007-azureportal.png)
 
 Now we wait until all containers shut down in the default node and all the containers started running in the spot node. Run the Kubernetes deployment manifest to start the application pods.
 
@@ -208,9 +208,9 @@ kubectl apply -f azure-vote-back-deployment.yaml
 watch kubectl get pod -o wide
 ```
 
-![alt text](images/008-kubectl.png)
+![All kubernetes pods running in spot node pool](images/008-kubectl.png)
 
-![alt text](images/009-kubectl.png)
+![Application pods are running in spot node pool](images/009-kubectl.png)
 
 Give your Public IP address a DNS name, you should be able to reach it at `http://ENTER-YOUR-DNS-NAME.westus.cloudapp.azure.com/`
 
@@ -219,15 +219,15 @@ Give your Public IP address a DNS name, you should be able to reach it at `http:
 export K8S_IP_ID=$(az network public-ip list \
 	--subscription $SUBSCRIPTION \
 	--resource-group $MC_RESOURCE_GROUP \
-    	--query '[1].id' -otsv)
+    --query '[1].id' -otsv)
 az network public-ip update \
 	--ids $K8S_IP_ID \
 	--dns-name ENTER-YOUR-DNS-NAME
 ```
 
-![alt text](images/010-azureportal.png)
+![DNS name added to Public IP Address](images/010-azureportal.png)
 
-![alt text](images/001-webapp.png)
+![Example of web app](images/001-webapp.png)
 
 ## Scaling (Optional)
 
@@ -236,7 +236,7 @@ Set customer autoscale to CPU usage criteria
 - Increase compute instance count by 1 if average percentage CPU is more than 70% for more than 10 minutes
 - Decrease compute instance count by 1 if average percentage CPU is less than 20% for more than 10 minutes
 
-![alt text](images/011-azureportal.png)
+![Set to Custom Autoscale using rules](images/011-azureportal.png)
 
 Once you are done, you can tear everything down.
 
