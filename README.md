@@ -25,7 +25,7 @@ We start by pulling down and running the azure-cli container. Install AKS CLI an
 ```bash
 # Create a project directory
 git clone git@github.com:gpaw/Cheap_AKS_Kubernetes_Cluster.git
-cd Cheap_AKS_Kubernetes_Cluster.git
+cd Cheap_AKS_Kubernetes_Cluster
 docker run -ti --rm --name azure-cli-tutorial -v ~/Cheap_AKS_Kubernetes_Cluster:/home -w /home mcr.microsoft.com/azure-cli
 
 # Install AKS CLI
