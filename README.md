@@ -2,7 +2,7 @@
 
 ## Preamble
 
-In Part 1 we went through the theory and price comparisons between all major cloud providers and how we achieve the magical number of $1 per day to run a fully managed Kubernetes Cluster.
+[In Part 1](https://georgepaw.medium.com/how-to-run-the-cheapest-kubernetes-cluster-at-1-per-day-9287abb90cee) we went through the theory and price comparisons between all major cloud providers and how we achieve the magical number of $1 per day to run a fully managed Kubernetes Cluster, which powers my new app [Fakes.io](https://fakes.io).
 
 The following is a tutorial on how to create your very own cheapest managed Kubernetes cluster.
 
