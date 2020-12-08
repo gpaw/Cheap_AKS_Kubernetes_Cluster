@@ -16,7 +16,7 @@ You need to create a separate Pay-As-You-Go subscription in Azure. The Free Tier
 
 I am using docker-desktop to run my container. You can [download it from here](https://www.docker.com/products/docker-desktop).
 
-![alt text](001-webapp.png)
+![alt text](images/001-webapp.png)
 
 ## Tutorial
 
@@ -107,9 +107,9 @@ az aks get-credentials \
     --name $AKS_CLUSTER
 ```
 
-![alt text](002-azureportal.png)
+![alt text](images/002-azureportal.png)
 
-![alt text](003-azureportal.png)
+![alt text](images/003-azureportal.png)
 
 We will create the spot node pool by running the following commands. Once the node is running, we need to remove the taints to allow the core-dns services to run on a spot node.
 
@@ -146,11 +146,11 @@ kubectl taint nodes --all kubernetes.azure.com/scalesetpriority-
 # error: taint "kubernetes.azure.com/scalesetpriority" not found
 ```
 
-![alt text](004-azureportal.png)
+![alt text](images/004-azureportal.png)
 
-![alt text](005-azureportal.png)
+![alt text](images/005-azureportal.png)
 
-![alt text](006-kubectl.png)
+![alt text](images/006-kubectl.png)
 
 Next, we will scale down the default node pool to 0 instance.
 
@@ -191,7 +191,7 @@ kubectl delete node INSERT_DEFAULT_NODEPOOL_NAME
 # aks-spotnodepool-34579063-vmss000000   Ready    agent   24m   v1.18.10
 ```
 
-![alt text](007-azureportal.png)
+![alt text](images/007-azureportal.png)
 
 Now we wait until all containers shut down in the default node and all the containers started running in the spot node. Run the Kubernetes deployment manifest to start the application pods.
 
@@ -208,9 +208,9 @@ kubectl apply -f azure-vote-back-deployment.yaml
 watch kubectl get pod -o wide
 ```
 
-![alt text](008-kubectl.png)
+![alt text](images/008-kubectl.png)
 
-![alt text](009-kubectl.png)
+![alt text](images/009-kubectl.png)
 
 Give your Public IP address a DNS name, you should be able to reach it at `http://ENTER-YOUR-DNS-NAME.westus.cloudapp.azure.com/`
 
@@ -225,9 +225,9 @@ az network public-ip update \
 	--dns-name ENTER-YOUR-DNS-NAME
 ```
 
-![alt text](010-azureportal.png)
+![alt text](images/010-azureportal.png)
 
-![alt text](001-webapp.png)
+![alt text](images/001-webapp.png)
 
 ## Scaling (Optional)
 
@@ -236,7 +236,7 @@ Set customer autoscale to CPU usage criteria
 - Increase compute instance count by 1 if average percentage CPU is more than 70% for more than 10 minutes
 - Decrease compute instance count by 1 if average percentage CPU is less than 20% for more than 10 minutes
 
-![alt text](011-azureportal.png)
+![alt text](images/011-azureportal.png)
 
 Once you are done, you can tear everything down.
 
